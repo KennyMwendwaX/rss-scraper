@@ -33,6 +33,7 @@ func main() {
 
 	v1Router := chi.NewRouter()
 	v1Router.Get("/readiness", handlerReadiness)
+	v1Router.Get("/error", handlerError)
 
 	router.Mount("/v1", v1Router)
 
