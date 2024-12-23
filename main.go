@@ -1,23 +1,39 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/KennyMwendwaX/rss-scrapper/database"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
+
+type apiConfig struct {
+	DB *database.Queries
+}
 
 func main() {
 	godotenv.Load()
 
 	portString := os.Getenv("PORT")
-
 	if portString == "" {
 		log.Fatal("PORT environment variable not set")
+	}
+
+	dbUrl := os.Getenv("DATABASE_URL")
+	if portString == "" {
+		log.Fatal("PORT environment variable not set")
+	}
+
+	conn, err := sql.Open("postgres", dbUrl)
+	if err != nil {
+		log.Fatal("Could not connect to database", err)
 	}
 
 	router := chi.NewRouter()
