@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/KennyMwendwaX/rss-scrapper/database"
+	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
