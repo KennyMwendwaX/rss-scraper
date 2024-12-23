@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,6 +10,7 @@ import (
 	"github.com/KennyMwendwaX/rss-scrapper/database"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
@@ -31,9 +32,9 @@ func main() {
 		log.Fatal("PORT environment variable not set")
 	}
 
-	conn, err := sql.Open("postgres", dbUrl)
+	conn, err := pgxpool.New(context.Background(), dbUrl)
 	if err != nil {
-		log.Fatal("Could not connect to database:", err)
+		log.Fatal(err.Error())
 	}
 
 	apiConfig := &apiConfig{
@@ -54,7 +55,7 @@ func main() {
 	v1Router := chi.NewRouter()
 	v1Router.Get("/readiness", handlerReadiness)
 	v1Router.Get("/error", handlerError)
-	v1Router.Get("/users", apiConfig.handlerCreateUser)
+	v1Router.Post("/users", apiConfig.handlerCreateUser)
 
 	router.Mount("/v1", v1Router)
 
@@ -64,8 +65,7 @@ func main() {
 	}
 
 	log.Printf("Server listening on port %s", portString)
-	err := server.ListenAndServe()
-	if err != nil {
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 
