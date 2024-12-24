@@ -10,6 +10,7 @@ type User struct {
 	Name      string           `json:"name"`
 	CreatedAt pgtype.Timestamp `json:"created_at"`
 	UpdatedAt pgtype.Timestamp `json:"updated_at"`
+	ApiKey    string           `json:"api_key"`
 }
 
 func SerializeUser(databaseUser database.User) User {
@@ -18,5 +19,6 @@ func SerializeUser(databaseUser database.User) User {
 		Name:      databaseUser.Name,
 		CreatedAt: databaseUser.CreatedAt,
 		UpdatedAt: databaseUser.UpdatedAt,
+		ApiKey:    databaseUser.ApiKey,
 	}
 }
