@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/KennyMwendwaX/rss-scrapper/internal/auth"
+	"github.com/KennyMwendwaX/rss-scrapper/internal/config"
 	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
 	"github.com/KennyMwendwaX/rss-scrapper/internal/handlers"
 	"github.com/go-chi/chi"
@@ -26,7 +27,7 @@ func main() {
 
 	dbUrl := os.Getenv("DATABASE_URL")
 	if dbUrl == "" {
-		log.Fatal("PORT environment variable not set")
+		log.Fatal("DATABASE_URL environment variable not set")
 	}
 
 	conn, err := pgxpool.New(context.Background(), dbUrl)
@@ -34,7 +35,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	apiConfig := &handlers.ApiConfig{
+	apiCfg := &config.APIConfig{
 		DB: database.New(conn),
 	}
 
@@ -52,9 +53,8 @@ func main() {
 	v1Router := chi.NewRouter()
 	v1Router.Get("/readiness", handlers.Readiness)
 	v1Router.Get("/error", handlers.Error)
-	v1Router.Post("/users", apiConfig.CreateUser)
-	v1Router.Get("/users", apiConfig.GetUser)
-
+	v1Router.Post("/users", handlers.CreateUser(apiCfg))
+	v1Router.Get("/users", auth.AuthMiddleware(apiCfg, handlers.GetUser))
 	router.Mount("/v1", v1Router)
 
 	server := &http.Server{
@@ -66,6 +66,4 @@ func main() {
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Printf("PORT: %s\n", portString)
 }
