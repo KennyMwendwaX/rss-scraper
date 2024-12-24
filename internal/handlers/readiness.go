@@ -1,7 +1,11 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
+)
 
 func Readiness(w http.ResponseWriter, r *http.Request) {
-	respondWithJSON(w, http.StatusOK, map[string]bool{"ok": true})
+	utils.RespondWithJSON(w, http.StatusOK, map[string]bool{"ok": true})
 }

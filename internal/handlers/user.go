@@ -9,11 +9,16 @@ import (
 	"github.com/KennyMwendwaX/rss-scrapper/internal/auth"
 	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
 	"github.com/KennyMwendwaX/rss-scrapper/internal/models"
+	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func (apiConfig *ApiConfig) CreateUser(w http.ResponseWriter, r *http.Request) {
+type apiConfig struct {
+	DB *database.Queries
+}
+
+func (apiConfig *apiConfig) CreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
 	}
@@ -23,7 +28,7 @@ func (apiConfig *ApiConfig) CreateUser(w http.ResponseWriter, r *http.Request) {
 	params := parameters{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Error parsing json")
+		utils.RespondWithError(w, http.StatusBadRequest, "Error parsing json")
 		return
 	}
 
@@ -48,25 +53,25 @@ func (apiConfig *ApiConfig) CreateUser(w http.ResponseWriter, r *http.Request) {
 		UpdatedAt: pgTimestamp,
 	})
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Error creating user")
+		utils.RespondWithError(w, http.StatusInternalServerError, "Error creating user")
 		return
 	}
 
-	respondWithJSON(w, http.StatusCreated, models.SerializeUser(user))
+	utils.RespondWithJSON(w, http.StatusCreated, models.SerializeUser(user))
 }
 
-func (apiConfig *ApiConfig) GetUser(w http.ResponseWriter, r *http.Request) {
+func (apiConfig *apiConfig) GetUser(w http.ResponseWriter, r *http.Request) {
 	apiKey, err := auth.GetAPIKey(r.Header)
 	if err != nil {
-		respondWithError(w, http.StatusUnauthorized, fmt.Sprintf("Authorization error: %v", err))
+		utils.RespondWithError(w, http.StatusUnauthorized, fmt.Sprintf("Authorization error: %v", err))
 		return
 	}
 
 	user, err := apiConfig.DB.GetUserByAPIKey(r.Context(), apiKey)
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, fmt.Sprintf("Error getting user: %v", err))
+		utils.RespondWithError(w, http.StatusInternalServerError, fmt.Sprintf("Error getting user: %v", err))
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, models.SerializeUser(user))
+	utils.RespondWithJSON(w, http.StatusOK, models.SerializeUser(user))
 }

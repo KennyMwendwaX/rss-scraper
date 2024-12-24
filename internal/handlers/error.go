@@ -1,7 +1,11 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
+)
 
 func Error(w http.ResponseWriter, r *http.Request) {
-	respondWithError(w, http.StatusBadRequest, "Something went wrong")
+	utils.RespondWithError(w, http.StatusBadRequest, "Something went wrong")
 }
