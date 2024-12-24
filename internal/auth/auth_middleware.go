@@ -12,7 +12,6 @@ import (
 
 type authedHandler func(http.ResponseWriter, *http.Request, database.User)
 
-// Changed to match how it's being called in main.go
 func AuthMiddleware(cfg *config.APIConfig, handler authedHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		apiKey, err := GetAPIKey(r.Header)

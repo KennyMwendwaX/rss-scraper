@@ -1,5 +1,4 @@
 -- +goose Up
-
 Create TABLE users (
     id UUID PRIMARY KEY,
     name TEXT NOT NULL,
