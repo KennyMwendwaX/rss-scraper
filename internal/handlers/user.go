@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
@@ -6,11 +6,12 @@ import (
 	"time"
 
 	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
+	"github.com/KennyMwendwaX/rss-scrapper/internal/models"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func (apiConfig *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (apiConfig *ApiConfig) CreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
 	}
@@ -27,15 +28,15 @@ func (apiConfig *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Req
 	// Convert uuid.UUID to pgtype.UUID
 	id := uuid.New()
 	pgID := pgtype.UUID{
-		Bytes: id, // Assign the UUID bytes
+		Bytes: id,
 		Valid: true,
 	}
 
 	// Convert time.Time to pgtype.Timestamp
 	now := time.Now().UTC()
 	pgTimestamp := pgtype.Timestamp{
-		Time:  now,  // Assign the time value
-		Valid: true, // Set to valid
+		Time:  now,
+		Valid: true,
 	}
 
 	user, err := apiConfig.DB.CreateUser(r.Context(), database.CreateUserParams{
@@ -49,10 +50,10 @@ func (apiConfig *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, serializeUser(user))
+	respondWithJSON(w, http.StatusOK, models.SerializeUser(user))
 }
 
-func (apiConfig *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
+func (apiConfig *ApiConfig) GetUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
 	}
@@ -91,5 +92,5 @@ func (apiConfig *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, serializeUser(user))
+	respondWithJSON(w, http.StatusOK, models.SerializeUser(user))
 }

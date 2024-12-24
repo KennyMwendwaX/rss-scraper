@@ -8,16 +8,13 @@ import (
 	"os"
 
 	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
+	"github.com/KennyMwendwaX/rss-scrapper/internal/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
-
-type apiConfig struct {
-	DB *database.Queries
-}
 
 func main() {
 	godotenv.Load()
@@ -37,7 +34,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	apiConfig := &apiConfig{
+	apiConfig := &handlers.ApiConfig{
 		DB: database.New(conn),
 	}
 
@@ -53,9 +50,9 @@ func main() {
 	}))
 
 	v1Router := chi.NewRouter()
-	v1Router.Get("/readiness", handlerReadiness)
-	v1Router.Get("/error", handlerError)
-	v1Router.Post("/users", apiConfig.handlerCreateUser)
+	v1Router.Get("/readiness", handlers.Readiness)
+	v1Router.Get("/error", handlers.Error)
+	v1Router.Post("/users", apiConfig.CreateUser)
 
 	router.Mount("/v1", v1Router)
 

@@ -1,4 +1,4 @@
-package main
+package models
 
 import (
 	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
@@ -12,7 +12,7 @@ type User struct {
 	UpdatedAt pgtype.Timestamp `json:"updated_at"`
 }
 
-func serializeUser(databaseUser database.User) User {
+func SerializeUser(databaseUser database.User) User {
 	return User{
 		ID:        databaseUser.ID,
 		Name:      databaseUser.Name,

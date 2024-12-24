@@ -1,10 +1,16 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
 )
+
+type ApiConfig struct {
+	DB *database.Queries
+}
 
 func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	data, err := json.Marshal(payload)
