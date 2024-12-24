@@ -13,10 +13,11 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func CreateUser(cfg *config.APIConfig) http.HandlerFunc {
+func CreateFeed(cfg *config.APIConfig, user database.User) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		type parameters struct {
 			Name string `json:"name"`
+			Url  string `json:"url"`
 		}
 
 		decoder := json.NewDecoder(r.Body)
@@ -40,21 +41,19 @@ func CreateUser(cfg *config.APIConfig) http.HandlerFunc {
 			Valid: true,
 		}
 
-		user, err := cfg.DB.CreateUser(r.Context(), database.CreateUserParams{
+		feed, err := cfg.DB.CreateFeed(r.Context(), database.CreateFeedParams{
 			ID:        pgID,
 			Name:      params.Name,
+			Url:       params.Url,
 			CreatedAt: pgTimestamp,
 			UpdatedAt: pgTimestamp,
+			UserID:    user.ID,
 		})
 		if err != nil {
 			utils.RespondWithError(w, http.StatusInternalServerError, "Error creating user")
 			return
 		}
 
-		utils.RespondWithJSON(w, http.StatusCreated, models.SerializeUser(user))
+		utils.RespondWithJSON(w, http.StatusCreated, models.SerializeFeed(feed))
 	}
-}
-
-func GetUser(w http.ResponseWriter, r *http.Request, user database.User) {
-	utils.RespondWithJSON(w, http.StatusOK, models.SerializeUser(user))
 }
