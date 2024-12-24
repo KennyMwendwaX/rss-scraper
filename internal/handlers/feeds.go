@@ -13,8 +13,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func CreateFeed(cfg *config.APIConfig, user database.User) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func CreateFeed(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request, database.User) {
+	return func(w http.ResponseWriter, r *http.Request, user database.User) {
 		type parameters struct {
 			Name string `json:"name"`
 			Url  string `json:"url"`
