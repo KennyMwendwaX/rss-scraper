@@ -15,6 +15,7 @@ func AppRouter() *chi.Mux {
 	v1Router.Get("/error", handlers.Error)
 	v1Router.Post("/users", handlers.CreateUser(apiCfg))
 	v1Router.Get("/users", auth.AuthMiddleware(apiCfg, handlers.GetUser))
+	v1Router.Get("/feeds", handlers.GetFeeds(apiCfg))
 	v1Router.Post("/feeds", auth.AuthMiddleware(apiCfg, handlers.CreateFeed(apiCfg)))
 
 	return v1Router

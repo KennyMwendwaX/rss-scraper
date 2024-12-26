@@ -58,7 +58,7 @@ func CreateFeed(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request, 
 	}
 }
 
-func GetFeed(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request) {
+func GetFeeds(cfg *config.APIConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		feeds, err := cfg.DB.GetFeeds(r.Context())
