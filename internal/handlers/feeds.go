@@ -57,3 +57,16 @@ func CreateFeed(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request, 
 		utils.RespondWithJSON(w, http.StatusCreated, models.SerializeFeed(feed))
 	}
 }
+
+func GetFeed(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		feeds, err := cfg.DB.GetFeeds(r.Context())
+		if err != nil {
+			utils.RespondWithError(w, http.StatusInternalServerError, "Error creating user")
+			return
+		}
+
+		utils.RespondWithJSON(w, http.StatusCreated, models.SerializeFeeds(feeds))
+	}
+}
