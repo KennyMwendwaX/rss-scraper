@@ -17,6 +17,14 @@ type Feed struct {
 	UserID    pgtype.UUID
 }
 
+type FeedFollow struct {
+	ID        pgtype.UUID
+	CreatedAt pgtype.Timestamp
+	UpdatedAt pgtype.Timestamp
+	UserID    pgtype.UUID
+	FeedID    pgtype.UUID
+}
+
 type User struct {
 	ID        pgtype.UUID
 	Name      string
