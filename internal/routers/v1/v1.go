@@ -14,6 +14,7 @@ func Router(cfg *config.APIConfig) *chi.Mux {
 	router.Mount("/error", ErrorRoutes())
 	router.Mount("/users", UserRoutes(cfg))
 	router.Mount("/feeds", FeedRoutes(cfg))
+	router.Mount("/feed-follows", FeedFollowRoutes(cfg))
 
 	return router
 }
