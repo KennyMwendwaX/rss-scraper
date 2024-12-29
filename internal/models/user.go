@@ -13,7 +13,7 @@ type User struct {
 	ApiKey    string           `json:"api_key"`
 }
 
-func SerializeUser(databaseUser database.User) User {
+func FromDatabaseUser(databaseUser database.User) User {
 	return User{
 		ID:        databaseUser.ID,
 		Name:      databaseUser.Name,

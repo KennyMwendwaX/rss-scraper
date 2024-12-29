@@ -51,10 +51,10 @@ func CreateUser(cfg *config.APIConfig) http.HandlerFunc {
 			return
 		}
 
-		utils.RespondWithJSON(w, http.StatusCreated, models.SerializeUser(user))
+		utils.RespondWithJSON(w, http.StatusCreated, models.FromDatabaseUser(user))
 	}
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request, user database.User) {
-	utils.RespondWithJSON(w, http.StatusOK, models.SerializeUser(user))
+	utils.RespondWithJSON(w, http.StatusOK, models.FromDatabaseUser(user))
 }
