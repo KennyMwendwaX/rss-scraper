@@ -22,3 +22,12 @@ func FromDatabaseFeedFollow(feedFollow database.FeedFollow) FeedFollow {
 		FeedID:    feedFollow.FeedID,
 	}
 }
+
+func FromDatabaseFeedFollows(dbFeedFollows []database.FeedFollow) []FeedFollow {
+	feedsFollows := []FeedFollow{}
+
+	for _, dbFeedFollows := range dbFeedFollows {
+		feedsFollows = append(feedsFollows, FromDatabaseFeedFollow(dbFeedFollows))
+	}
+	return feedsFollows
+}

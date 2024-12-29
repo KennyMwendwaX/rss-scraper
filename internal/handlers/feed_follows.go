@@ -55,3 +55,16 @@ func CreateFeedFollow(cfg *config.APIConfig) func(http.ResponseWriter, *http.Req
 		utils.RespondWithJSON(w, http.StatusCreated, models.FromDatabaseFeedFollow(feedFollow))
 	}
 }
+
+func GetFeedFollows(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request, database.User) {
+	return func(w http.ResponseWriter, r *http.Request, user database.User) {
+
+		feedFollows, err := cfg.DB.GetFeedFollows(r.Context(), user.ID)
+		if err != nil {
+			utils.RespondWithError(w, http.StatusInternalServerError, "Error could not get feed follows")
+			return
+		}
+
+		utils.RespondWithJSON(w, http.StatusOK, models.FromDatabaseFeedFollows(feedFollows))
+	}
+}
