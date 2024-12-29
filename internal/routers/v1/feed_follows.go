@@ -11,5 +11,6 @@ import (
 func FeedFollowRoutes(cfg *config.APIConfig) *chi.Mux {
 	router := chi.NewRouter()
 	router.Post("/", auth.AuthMiddleware(cfg, handlers.CreateFeedFollow(cfg)))
+	router.Get("/", auth.AuthMiddleware(cfg, handlers.GetFeedFollows(cfg)))
 	return router
 }
