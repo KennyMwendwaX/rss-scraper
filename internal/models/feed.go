@@ -14,7 +14,7 @@ type Feed struct {
 	UserID    pgtype.UUID      `json:"user_id"`
 }
 
-func SerializeFeed(databaseFeed database.Feed) Feed {
+func FromDatabaseFeed(databaseFeed database.Feed) Feed {
 	return Feed{
 		ID:        databaseFeed.ID,
 		Name:      databaseFeed.Name,
@@ -25,11 +25,11 @@ func SerializeFeed(databaseFeed database.Feed) Feed {
 	}
 }
 
-func SerializeFeeds(databaseFeed []database.Feed) []Feed {
+func FromDatabaseFeeds(databaseFeed []database.Feed) []Feed {
 	feeds := []Feed{}
 
-	for _, ddatabaseFeed := range databaseFeed {
-		feeds = append(feeds, SerializeFeed(ddatabaseFeed))
+	for _, databaseFeed := range databaseFeed {
+		feeds = append(feeds, FromDatabaseFeed(databaseFeed))
 	}
 	return feeds
 }

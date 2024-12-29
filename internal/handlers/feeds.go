@@ -54,7 +54,7 @@ func CreateFeed(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request, 
 			return
 		}
 
-		utils.RespondWithJSON(w, http.StatusCreated, models.SerializeFeed(feed))
+		utils.RespondWithJSON(w, http.StatusCreated, models.FromDatabaseFeed(feed))
 	}
 }
 
@@ -67,6 +67,6 @@ func GetFeeds(cfg *config.APIConfig) http.HandlerFunc {
 			return
 		}
 
-		utils.RespondWithJSON(w, http.StatusOK, models.SerializeFeeds(feeds))
+		utils.RespondWithJSON(w, http.StatusOK, models.FromDatabaseFeeds(feeds))
 	}
 }
