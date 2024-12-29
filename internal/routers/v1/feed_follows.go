@@ -12,5 +12,6 @@ func FeedFollowRoutes(cfg *config.APIConfig) *chi.Mux {
 	router := chi.NewRouter()
 	router.Post("/", auth.AuthMiddleware(cfg, handlers.CreateFeedFollow(cfg)))
 	router.Get("/", auth.AuthMiddleware(cfg, handlers.GetFeedFollows(cfg)))
+	router.Delete("/{feedFollowID}", auth.AuthMiddleware(cfg, handlers.DeleteFeedFollow(cfg)))
 	return router
 }
