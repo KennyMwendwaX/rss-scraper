@@ -9,6 +9,7 @@ import (
 	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
 	"github.com/KennyMwendwaX/rss-scrapper/internal/models"
 	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
+	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -66,5 +67,30 @@ func GetFeedFollows(cfg *config.APIConfig) func(http.ResponseWriter, *http.Reque
 		}
 
 		utils.RespondWithJSON(w, http.StatusOK, models.FromDatabaseFeedFollows(feedFollows))
+	}
+}
+
+func DeleteFeedFollow(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request, database.User) {
+	return func(w http.ResponseWriter, r *http.Request, user database.User) {
+		feedFollowIDStr := chi.URLParam(r, "feedFollowID")
+		feedFollowID, err := uuid.Parse(feedFollowIDStr)
+		if err != nil {
+			utils.RespondWithError(w, http.StatusBadRequest, "Error could not parse feed follow id")
+			return
+		}
+
+		err = cfg.DB.DeleteFeedFollow(r.Context(), database.DeleteFeedFollowParams{
+			ID: pgtype.UUID{
+				Bytes: feedFollowID,
+				Valid: true,
+			},
+			UserID: user.ID,
+		})
+		if err != nil {
+			utils.RespondWithError(w, http.StatusInternalServerError, "Could not delete feed follow")
+			return
+		}
+
+		utils.RespondWithJSON(w, http.StatusOK, struct{}{})
 	}
 }
