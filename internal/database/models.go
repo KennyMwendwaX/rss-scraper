@@ -9,12 +9,13 @@ import (
 )
 
 type Feed struct {
-	ID        pgtype.UUID
-	Name      string
-	Url       string
-	CreatedAt pgtype.Timestamp
-	UpdatedAt pgtype.Timestamp
-	UserID    pgtype.UUID
+	ID            pgtype.UUID
+	Name          string
+	Url           string
+	CreatedAt     pgtype.Timestamp
+	UpdatedAt     pgtype.Timestamp
+	UserID        pgtype.UUID
+	LastFetchedAt pgtype.Timestamp
 }
 
 type FeedFollow struct {
