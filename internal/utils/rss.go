@@ -13,7 +13,7 @@ type RSSFeed struct {
 		Link        string    `xml:"link"`
 		Description string    `xml:"description"`
 		Lang        string    `xml:"language"`
-		Items       []RSSItem `xml:"item"`
+		Item        []RSSItem `xml:"item"`
 	} `xml:"channel"`
 }
 
@@ -24,7 +24,7 @@ type RSSItem struct {
 	PubDate     string `xml:"pubDate"`
 }
 
-func urlToFeed(url string) (RSSFeed, error) {
+func UrlToFeed(url string) (RSSFeed, error) {
 	httpClient := http.Client{
 		Timeout: 10 * time.Second,
 	}
