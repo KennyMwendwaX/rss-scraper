@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/KennyMwendwaX/rss-scrapper/internal/config"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
+	"github.com/KennyMwendwaX/rss-scraper/internal/config"
+	"github.com/KennyMwendwaX/rss-scraper/internal/database"
 )
 
 func StartScraping(
@@ -51,7 +51,7 @@ func scrapeFeed(wg *sync.WaitGroup, cfg *config.APIConfig, feed database.Feed) {
 	}
 
 	for _, item := range rssFeed.Channel.Item {
-		log.Println("Found item: ", item.Title)
+		log.Println("Found item: ", item.Title, "on feed", feed.Name)
 	}
 
 	log.Printf("Feed %s collected, %v post found", feed.Name, len(rssFeed.Channel.Item))

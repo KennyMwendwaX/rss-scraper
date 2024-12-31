@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/KennyMwendwaX/rss-scrapper/internal/config"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/models"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
+	"github.com/KennyMwendwaX/rss-scraper/internal/config"
+	"github.com/KennyMwendwaX/rss-scraper/internal/database"
+	"github.com/KennyMwendwaX/rss-scraper/internal/models"
+	"github.com/KennyMwendwaX/rss-scraper/internal/utils"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )

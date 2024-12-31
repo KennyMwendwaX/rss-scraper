@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/KennyMwendwaX/rss-scrapper/internal/config"
-	v1 "github.com/KennyMwendwaX/rss-scrapper/internal/routers/v1"
+	"github.com/KennyMwendwaX/rss-scraper/internal/config"
+	v1 "github.com/KennyMwendwaX/rss-scraper/internal/routers/v1"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 )

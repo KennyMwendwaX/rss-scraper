@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/KennyMwendwaX/rss-scrapper/internal/config"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
+	"github.com/KennyMwendwaX/rss-scraper/internal/config"
+	"github.com/KennyMwendwaX/rss-scraper/internal/database"
+	"github.com/KennyMwendwaX/rss-scraper/internal/utils"
 )
 
 type authedHandler func(http.ResponseWriter, *http.Request, database.User)

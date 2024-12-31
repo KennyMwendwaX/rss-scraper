@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"github.com/KennyMwendwaX/rss-scrapper/internal/handlers"
+	"github.com/KennyMwendwaX/rss-scraper/internal/handlers"
 	"github.com/go-chi/chi"
 )
 

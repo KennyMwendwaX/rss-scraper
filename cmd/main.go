@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/KennyMwendwaX/rss-scrapper/internal/config"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/routers"
-	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
+	"github.com/KennyMwendwaX/rss-scraper/internal/config"
+	"github.com/KennyMwendwaX/rss-scraper/internal/routers"
+	"github.com/KennyMwendwaX/rss-scraper/internal/utils"
 	"github.com/joho/godotenv"
 )
 
@@ -21,6 +21,7 @@ func main() {
 	}
 
 	cfg := config.ApiCfg()
+	defer cfg.Close()
 
 	go utils.StartScraping(cfg, 10, time.Minute)
 
