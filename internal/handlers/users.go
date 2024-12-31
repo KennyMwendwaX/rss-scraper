@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -57,4 +58,19 @@ func CreateUser(cfg *config.APIConfig) http.HandlerFunc {
 
 func GetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	utils.RespondWithJSON(w, http.StatusOK, models.FromDatabaseUser(user))
+}
+
+func GetUserPosts(cfg *config.APIConfig) func(http.ResponseWriter, *http.Request, database.User) {
+	return func(w http.ResponseWriter, r *http.Request, user database.User) {
+		posts, err := cfg.DB.GetPostsForUser(r.Context(), database.GetPostsForUserParams{
+			UserID: user.ID,
+			Limit:  10,
+		})
+		if err != nil {
+			utils.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Couldn't get posts: %v", err))
+			return
+		}
+
+		utils.RespondWithJSON(w, http.StatusOK, models.FromDatabasePosts(posts))
+	}
 }
