@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	"log"
+	"strings"
 	"sync"
 	"time"
 
@@ -87,6 +88,9 @@ func scrapeFeed(wg *sync.WaitGroup, cfg *config.APIConfig, feed database.Feed) {
 			FeedID:      feed.ID,
 		})
 		if err != nil {
+			if strings.Contains(err.Error(), "duplicate key") {
+				continue
+			}
 			log.Printf("Failed to create post: %v", err)
 		}
 	}
