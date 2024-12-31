@@ -4,8 +4,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/KennyMwendwaX/rss-scrapper/internal/config"
 	"github.com/KennyMwendwaX/rss-scrapper/internal/routers"
+	"github.com/KennyMwendwaX/rss-scrapper/internal/utils"
 	"github.com/joho/godotenv"
 )
 
@@ -16,6 +19,10 @@ func main() {
 	if portString == "" {
 		log.Fatal("PORT environment variable not set")
 	}
+
+	cfg := config.ApiCfg()
+
+	go utils.StartScraping(cfg, 10, time.Minute)
 
 	router := routers.AppRouter()
 

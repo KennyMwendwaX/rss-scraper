@@ -10,8 +10,8 @@ import (
 	"github.com/KennyMwendwaX/rss-scrapper/internal/database"
 )
 
-func startScraping(
-	cfg config.APIConfig,
+func StartScraping(
+	cfg *config.APIConfig,
 	concurrency int,
 	timeBetweenRequest time.Duration,
 ) {
@@ -35,7 +35,7 @@ func startScraping(
 	}
 }
 
-func scrapeFeed(wg *sync.WaitGroup, cfg config.APIConfig, feed database.Feed) {
+func scrapeFeed(wg *sync.WaitGroup, cfg *config.APIConfig, feed database.Feed) {
 	defer wg.Done()
 
 	_, err := cfg.DB.MarkFeedAsFetched(context.Background(), feed.ID)
