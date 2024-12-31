@@ -8,6 +8,8 @@ import (
 
 	"github.com/KennyMwendwaX/rss-scraper/internal/config"
 	"github.com/KennyMwendwaX/rss-scraper/internal/database"
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func StartScraping(
@@ -51,8 +53,43 @@ func scrapeFeed(wg *sync.WaitGroup, cfg *config.APIConfig, feed database.Feed) {
 	}
 
 	for _, item := range rssFeed.Channel.Item {
-		log.Println("Found item: ", item.Title, "on feed", feed.Name)
+		pubAt, err := time.Parse(time.RFC1123Z, item.PubDate)
+		if err != nil {
+			log.Printf("Couldn't parse date %v with err %v", item.PubDate, err)
+			continue
+		}
+
+		id := uuid.New()
+		pgID := pgtype.UUID{
+			Bytes: id,
+			Valid: true,
+		}
+
+		now := time.Now().UTC()
+		pgTimestamp := pgtype.Timestamp{
+			Time:  now,
+			Valid: true,
+		}
+
+		publishedAt := pgtype.Timestamp{
+			Time:  pubAt,
+			Valid: true,
+		}
+
+		_, err = cfg.DB.CreatePost(context.Background(), database.CreatePostParams{
+			ID:          pgID,
+			Title:       item.Title,
+			Description: item.Description,
+			Url:         item.Link,
+			PublishedAt: publishedAt,
+			CreatedAt:   pgTimestamp,
+			UpdatedAt:   pgTimestamp,
+			FeedID:      feed.ID,
+		})
+		if err != nil {
+			log.Printf("Failed to create post: %v", err)
+		}
 	}
 
-	log.Printf("Feed %s collected, %v post found", feed.Name, len(rssFeed.Channel.Item))
+	log.Printf("Feed %s collected, %v posts found", feed.Name, len(rssFeed.Channel.Item))
 }

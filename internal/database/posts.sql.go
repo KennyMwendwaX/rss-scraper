@@ -19,7 +19,7 @@ VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, title, description, publis
 type CreatePostParams struct {
 	ID          pgtype.UUID
 	Title       string
-	Description pgtype.Text
+	Description string
 	PublishedAt pgtype.Timestamp
 	Url         string
 	CreatedAt   pgtype.Timestamp

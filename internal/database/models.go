@@ -29,7 +29,7 @@ type FeedFollow struct {
 type Post struct {
 	ID          pgtype.UUID
 	Title       string
-	Description pgtype.Text
+	Description string
 	PublishedAt pgtype.Timestamp
 	Url         string
 	CreatedAt   pgtype.Timestamp

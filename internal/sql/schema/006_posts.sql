@@ -2,7 +2,7 @@
 Create TABLE posts (
     id UUID PRIMARY KEY,
     title TEXT NOT NULL,
-    description TEXT,
+    description TEXT NOT NULL,
     published_at TIMESTAMP NOT NULL,
     url TEXT NOT NULL UNIQUE,
     created_at TIMESTAMP NOT NULL,
