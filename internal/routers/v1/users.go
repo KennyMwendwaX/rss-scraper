@@ -12,5 +12,6 @@ func UserRoutes(cfg *config.APIConfig) *chi.Mux {
 	router := chi.NewRouter()
 	router.Post("/", handlers.CreateUser(cfg))
 	router.Get("/", auth.AuthMiddleware(cfg, handlers.GetUser))
+	router.Get("/posts", auth.AuthMiddleware(cfg, handlers.GetUserPosts(cfg)))
 	return router
 }
